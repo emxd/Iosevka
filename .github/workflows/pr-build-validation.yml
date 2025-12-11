@@ -1,16 +1,15 @@
 name: PR Font Build Validation
 
-on: [pull_request]
+on: [pull_request, workflow_dispatch, push]
 
 jobs:
   build:
     name: Build ${{ matrix.fontName }} font
-    if: github.repository == 'be5invis/Iosevka'
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        fontName: ["Iosevka", "IosevkaSlab", "IosevkaAile", "IosevkaEtoile", "IosevkaNoVarTest"]
+        fontName: ["IosevkaCustom"]
 
     steps:
       # Checkout repository into `iosevka` sub directory
@@ -35,3 +34,11 @@ jobs:
         run: |
           npm install
           npm run build -- contents::${{ matrix.fontName }}
+          
+      # Upload font artifacts
+      - name: Upload compiled fonts
+        uses: actions/upload-artifact@v4
+        with:
+          name: iosevka-fonts
+          path: |
+            iosevka/dist/IosevkaCustom/*
