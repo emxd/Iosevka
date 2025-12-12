@@ -33,7 +33,7 @@ jobs:
         working-directory: iosevka
         run: |
           npm install
-          npm run build -- contents::${{ matrix.fontName }}
+          npm run build -- ttf::${{ matrix.fontName }}
           
       # Upload font artifacts
       - name: Upload compiled fonts
